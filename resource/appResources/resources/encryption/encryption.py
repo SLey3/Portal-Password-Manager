@@ -3,32 +3,38 @@ Encryption module for PWD Manager
 """
 # Imports
 from cryptography.fernet import Fernet
+import os
+import base64
 
 # encypting 
-password = 'Howimsiw' #TODO connect this with the user responce with wx
+password = 'Howimsiw' #for main()
 
-def encryption(pswd):
+KEY_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\resource\\appResources\\resources\\encryption\\key.key'
+
+def encrypt(pswd):
     """
     Encrypts requested Password from user
     """
-    file = open('key.key', 'rb')
+    file = open(KEY_PATH, 'rb')
     key = file.read()
+    print(key)
     file.close()
     password_provided = pswd
     coded = password_provided.encode()
     print(coded)
+    
     f = Fernet(key)
     encrypt = f.encrypt(coded)
     print(encrypt)
     return encrypt
 
 
-def de_encrypt():
+def de_encrypt(encrypted_password):
     """
     De encrypts the password for user to see if requested
     """
-    encrypt_msg = encryption(password)
-    file = open('key.key', 'rb')
+    encrypt_msg = encrypted_password
+    file = open(KEY_PATH, 'rb')
     key2 = file.read()
     file.close()
     f2 = Fernet(key2)
@@ -38,4 +44,9 @@ def de_encrypt():
     
     return decrypted_msg
 
-de_encrypt()
+def main():
+    encryption = encrypt(password)
+    de_encrypt(encryption)
+    
+if __name__ == '__main__':
+    main()

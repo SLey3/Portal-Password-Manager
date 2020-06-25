@@ -1,3 +1,6 @@
+"""
+Login Window for Application
+"""
 #Imports
 import wx
 
@@ -12,8 +15,6 @@ class loginFrame(wx.Frame):
     def InitUI(self):
         #TODO Create Full login if possible with mentor
         pass
-     
-
 
 def main():
     app = wx.App()
