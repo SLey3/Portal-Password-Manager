@@ -1,6 +1,7 @@
 # Imports
 import sqlite3
 import wx
+import wx.html
 from pubsub import pub
 import appResources.resources.encryption.encryption as encryption
 import appResources.resources.PWDgenerator.generator as generator
