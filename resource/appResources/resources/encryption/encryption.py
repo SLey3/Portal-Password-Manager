@@ -4,7 +4,7 @@ Encryption module for PWD Manager
 # Imports
 from cryptography.fernet import Fernet
 import os
-import base64
+
 
 # encypting 
 password = 'Howimsiw' #for main()

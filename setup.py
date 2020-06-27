@@ -2,7 +2,7 @@
 from setuptools import setup
 import os
 import sqlite3
-import pip
+
 ### Setup Code
 ## Sqlite3 setup
 if os.path.isfile('data.db') == False:
