@@ -4,3 +4,4 @@ pillow==7.1.2
 wxPython==4.1.0
 numpy==1.19.0
 python-string-utils==1.0.0
+PyPubSub==4.0.3
