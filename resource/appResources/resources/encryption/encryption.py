@@ -17,15 +17,11 @@ def encrypt(pswd):
     """
     file = open(KEY_PATH, 'rb')
     key = file.read()
-    print(key)
     file.close()
     password_provided = pswd
     coded = password_provided.encode()
-    print(coded)
-    
     f = Fernet(key)
     encrypt = f.encrypt(coded)
-    print(encrypt)
     return encrypt
 
 
@@ -40,8 +36,6 @@ def de_encrypt(encrypted_password):
     f2 = Fernet(key2)
     decrypted = f2.decrypt(encrypt_msg)
     decrypted_msg = decrypted.decode('utf-8')
-    print(decrypted_msg)
-    
     return decrypted_msg
 
 def main():

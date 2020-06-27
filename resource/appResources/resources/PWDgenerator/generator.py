@@ -8,7 +8,7 @@ import string_utils
 
 # Generator
 words = open('words.txt', 'r').read().split('\n')
-special_chars = ['!', '?', '%', '$', '*', '(', ')', '&', '@', '#', '^', '+', '=', '-', '_']
+special_chars = ['!', '?', '%', '$', '*', '(', ')', '&', '@', '#', '^', '+', '=', '-', '_', '"', ';', ':', '<', '>', '/', '\\']
 
 def create_password(num_words, num_numbers, num_special, Strengthen = False):
     """
