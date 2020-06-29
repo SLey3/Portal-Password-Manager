@@ -5,7 +5,8 @@ import wx.html
 from pubsub import pub
 import appResources.resources.encryption.encryption as encryption
 import appResources.resources.PWDgenerator.generator as generator
-
+import json
+import os
 
 ###Portal Password Manager Application
 
@@ -13,7 +14,90 @@ import appResources.resources.PWDgenerator.generator as generator
 
 APP_EXIT = 1
 
+JSON_FILE_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\resource\\appResources\\docs\\json\\accounts.json'
+
+del_char = ["'"]
+
 ## App frame
+class register(wx.Dialog):
+    def __init__(self):
+        wx.Dialog.__init__(self, None, title="Register", size=(500,650))
+        
+        r_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        r_lbl = wx.StaticText(self, label="Register Account")
+        r_sizer.Add(r_lbl, 0, wx.ALL|wx.TOP|wx.CENTER, 5)
+        
+        line_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        line = wx.StaticLine(self, 0, size=wx.DefaultSize, style=wx.LI_HORIZONTAL)
+        line_sizer.Add(line, 0, wx.ALL|wx.CENTER, 5)
+        
+        f_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        f_lbl = wx.StaticText(self, label="First Name:")
+        f_sizer.Add(f_lbl, 0, wx.ALL|wx.CENTER, 5)
+        self.f_ctrl = wx.TextCtrl(self)
+        f_sizer.Add(self.f_ctrl, 0, wx.ALL, 5)
+        
+        l_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        l_lbl = wx.StaticText(self, label="Last Name:")
+        l_sizer.Add(l_lbl, 0, wx.ALL|wx.CENTER, 5)
+        self.l_ctrl = wx.TextCtrl(self)
+        l_sizer.Add(self.l_ctrl, 0, wx.ALL, 5)
+        
+        username_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        username_lbl = wx.StaticText(self, label="Username:")
+        username_sizer.Add(username_lbl, 0, wx.ALL|wx.CENTER, 5)
+        self.username_ctrl = wx.TextCtrl(self)
+        username_sizer.Add(self.username_ctrl, 0, wx.ALL, 5)
+        
+        password_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        password_lbl = wx.StaticText(self, label="Password:")
+        password_sizer.Add(password_lbl, 0, wx.ALL|wx.CENTER, 5)
+        self.password_ctrl = wx.TextCtrl(self, style= wx.TE_PASSWORD|wx.TE_PROCESS_ENTER)
+        password_sizer.Add(self.password_ctrl, 0, wx.ALL, 5)
+        
+        register_btn = wx.Button(self, label="Register")
+        register_btn.Bind(wx.EVT_BUTTON, self.dataRegister)
+        
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        mainSizer.Add(r_sizer, 0, wx.ALL, 5)
+        mainSizer.Add(line_sizer, 0, wx.ALL, 5)
+        mainSizer.Add(f_sizer, 0, wx.ALL, 5)
+        mainSizer.Add(l_sizer, 0, wx.ALL, 5)
+        mainSizer.Add(username_sizer, 0, wx.ALL, 5)
+        mainSizer.Add(password_sizer, 0, wx.ALL, 5)
+        mainSizer.Add(register_btn, 0, wx.ALL|wx.LEFT, 5)
+        
+        self.SetSizer(mainSizer)
+    def dataRegister(self, data):
+        first = self.f_ctrl.GetValue()
+        last = self.l_ctrl.GetValue()
+        username = self.username_ctrl.GetValue()
+        raw_password = self.password_ctrl.GetValue()
+        password = encryption.encrypt(raw_password)
+        account_JSON = {
+            "Name": [
+                {
+                    "first":first,
+                    "last":last
+                }
+            ],
+            "Account": [
+                {
+                    "Username":username,
+                    "Password":str(password)
+                }
+            ]
+        }
+        
+        with open(JSON_FILE_PATH, 'a') as j:
+            try:
+                j.write('\n')
+                j.write(json.dump(account_JSON, j, indent=2, separators=(",",":")))
+                
+            except TypeError:
+                pass
+            self.Destroy()
+        
 class loginLog(wx.Dialog):
     def __init__(self):
         wx.Dialog.__init__(self, None, title="Portal Password Manager", size=(850, 750))
@@ -46,8 +130,25 @@ class loginLog(wx.Dialog):
         
     def onLogin(self, event):
         #TODO  Create server for checking account values
-        user_password = "admin"
-        user_username = "ghub4127@gmail.com"
+        j = open(JSON_FILE_PATH)
+        try:
+            account = json.load(j)
+        except json.decoder.JSONDecodeError:
+            wx.MessageBox("No account created under that username or password.", 'Error', wx.OK|wx.ICON_ERROR)
+        except UnboundLocalError:
+            wx.MessageBox("No entry detected.", 'Error', wx.OK|wx.ICON_ERROR)
+        user_username = account['Account'][-1]
+        raw_user_password = account['Account'][0]
+        raw_user_password = str(raw_user_password)
+        print(raw_user_password)
+        for i in del_char:
+            raw_user_password = raw_user_password.replace(i, '')
+        print(raw_user_password)
+        raw_user_password = raw_user_password[1::]
+        print(raw_user_password)
+        raw_user_password = raw_user_password.encode()
+        print(raw_user_password)
+        user_password = encryption.de_encrypt(raw_user_password)
         user_usr = self.user.GetValue()
         user_pwd = self.pwd.GetValue()
         if(user_pwd == user_password) and (user_usr == user_username):
@@ -59,7 +160,9 @@ class loginLog(wx.Dialog):
     
     def register(self, event):
         #TODO Create server for registering account
-        pass
+        llg = register()
+        llg.ShowModal()
+        
     
 class mainPanel(wx.Panel):
     def __init__(self, parent):
