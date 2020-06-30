@@ -18,6 +18,11 @@ JSON_FILE_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Loca
 
 del_char = ["'"]
 
+
+user_username = None
+
+raw_user_password = None
+
 ## App frame
 class register(wx.Dialog):
     def __init__(self):
@@ -73,27 +78,33 @@ class register(wx.Dialog):
         last = self.l_ctrl.GetValue()
         username = self.username_ctrl.GetValue()
         raw_password = self.password_ctrl.GetValue()
-        password = encryption.encrypt(raw_password)
+        b_password = encryption.encrypt(raw_password)
+        password = str(b_password)
+        full_name = first + " " + last
         account_JSON = {
-            "Name": [
+            "Account": [
                 {
                     "first":first,
                     "last":last
-                }
-            ],
-            "Account": [
+                },
                 {
                     "Username":username,
-                    "Password":str(password)
+                    "Password":password
+                }
+            ],
+            "Profile": [
+                {
+                    "Name":full_name,
+                    "Age":0,
+                    "Gender":"None",
+                    "Company":"None"
                 }
             ]
-        }
-        
+    }   
         with open(JSON_FILE_PATH, 'a') as j:
             try:
-                j.write('\n')
-                j.write(json.dump(account_JSON, j, indent=2, separators=(",",":")))
-                
+                json.dump(account_JSON, j, indent=2, separators=(',',':'))
+                j.write(",\n") 
             except TypeError:
                 pass
             self.Destroy()
@@ -104,20 +115,19 @@ class loginLog(wx.Dialog):
         
         usr_sizer = wx.BoxSizer(wx.HORIZONTAL)
         usr_lbl = wx.StaticText(self, label="Username:")
-        usr_sizer.Add(usr_lbl, 0, wx.ALL|wx.CENTER, 5)
+        usr_sizer.Add(usr_lbl, 0, wx.ALL|wx.LEFT, 5)
         self.user = wx.TextCtrl(self)
         usr_sizer.Add(self.user, 0, wx.ALL, 5)
         
         pwd_sizer = wx.BoxSizer(wx.HORIZONTAL)
         pwd_lbl = wx.StaticText(self, label="Password:")
-        pwd_sizer.Add(pwd_lbl, 0, wx.ALL|wx.CENTER, 5)
+        pwd_sizer.Add(pwd_lbl, 0, wx.ALL|wx.LEFT, 5)
         self.pwd = wx.TextCtrl(self, style=wx.TE_PASSWORD|wx.TE_PROCESS_ENTER)
         pwd_sizer.Add(self.pwd, 0, wx.ALL, 5)
         #TODO Get logo image for bitmap
         frameSizer = wx.BoxSizer(wx.VERTICAL)
         frameSizer.Add(usr_sizer, 0, wx.ALL, 5)
         frameSizer.Add(pwd_sizer, 0, wx.ALL, 5)
-        
         login_btn = wx.Button(self, label="Login")
         login_btn.Bind(wx.EVT_BUTTON, self.onLogin)
         frameSizer.Add(login_btn, 0, wx.ALL|wx.LEFT, 5)
@@ -129,28 +139,28 @@ class loginLog(wx.Dialog):
         self.SetSizer(frameSizer)
         
     def onLogin(self, event):
+        global user_username, raw_user_password
         #TODO  Create server for checking account values
-        j = open(JSON_FILE_PATH)
+        
+        user_usr = self.user.GetValue()
+        user_pwd = self.pwd.GetValue()
+        
         try:
-            account = json.load(j)
+           with open(JSON_FILE_PATH) as f:
+                account_JSON = json.load(f)
+                if user_username is None and raw_user_password is None:
+                    user_username = account_JSON['Account'][1]['Username']
+                    raw_user_password = account_JSON['Account'][1]['Password']
         except json.decoder.JSONDecodeError:
             wx.MessageBox("No account created under that username or password.", 'Error', wx.OK|wx.ICON_ERROR)
         except UnboundLocalError:
             wx.MessageBox("No entry detected.", 'Error', wx.OK|wx.ICON_ERROR)
-        user_username = account['Account'][-1]
-        raw_user_password = account['Account'][0]
         raw_user_password = str(raw_user_password)
-        print(raw_user_password)
         for i in del_char:
             raw_user_password = raw_user_password.replace(i, '')
-        print(raw_user_password)
         raw_user_password = raw_user_password[1::]
-        print(raw_user_password)
         raw_user_password = raw_user_password.encode()
-        print(raw_user_password)
         user_password = encryption.de_encrypt(raw_user_password)
-        user_usr = self.user.GetValue()
-        user_pwd = self.pwd.GetValue()
         if(user_pwd == user_password) and (user_usr == user_username):
             pub.sendMessage("frameListener", message="show")
             self.Destroy()

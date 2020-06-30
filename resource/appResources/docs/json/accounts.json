@@ -1,15 +1,20 @@
-
 {
-  "Name":[
-    {
-      "first":"Sergio",
-      "last":"Ley"
-    }
-  ],
   "Account":[
     {
-      "Username":"ghub4127@gmail.com",
-      "Password":"b'gAAAAABe-aWERIbMZxxZ4kzw64iDvdX33ivjoaNpTYJXgE4UbybwSXebFz0xNY1WYjQqMBKssSdyNDntef7KUSVb1pREItcQiw=='"
+      "first":"Portal ",
+      "last":"automatic account"
+    },
+    {
+      "Username":"portal@mainapp.py",
+      "Password":"b'gAAAAABe-m-oYNPH26O5uB3SB_iGNxTXiqIt_TkohyPkkc1R2dhTq9DPD0YSPQ37eIk4OqyiSQU3mnW48bqhvsoVb91f4H7M8A=='"
+    }
+  ],
+  "Profile":[
+    {
+      "Name":"Portal  automatic account",
+      "Age":0,
+      "Gender":"None",
+      "Company":"None"
     }
   ]
 }
