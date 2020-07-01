@@ -40,10 +40,3 @@ def show_created_password(created_password):
     #TODO make print statements into wx form in the mainapp.py file or through a different wx method
     print('\nPassword: %s'%pass_str)
     print('Strength: %0.5f'%strength)
-
-def main():
-    pass_str = create_password(2, 4, 3, True)
-    show_created_password(pass_str)
-
-if __name__ == '__main__':
-    main()

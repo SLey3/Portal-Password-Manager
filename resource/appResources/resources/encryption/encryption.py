@@ -7,8 +7,6 @@ import os
 
 
 # encypting 
-password = 'Howimsiw' #for main()
-
 KEY_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\resource\\appResources\\resources\\encryption\\key.key'
 
 def encrypt(pswd):
@@ -37,10 +35,3 @@ def de_encrypt(encrypted_password):
     decrypted = f2.decrypt(encrypt_msg)
     decrypted_msg = decrypted.decode('utf-8')
     return decrypted_msg
-
-def main():
-    encryption = encrypt(password)
-    de_encrypt(encryption)
-    
-if __name__ == '__main__':
-    main()
