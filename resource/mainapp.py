@@ -7,6 +7,7 @@ import appResources.resources.encryption.encryption as encryption
 import appResources.resources.PWDgenerator.generator as generator
 import json
 import os
+import re
 
 ###Portal Password Manager Application
 
@@ -15,6 +16,10 @@ import os
 APP_EXIT = 1
 
 JSON_FILE_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\resource\\appResources\\docs\\json\\accounts.json'
+
+EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]")
+
+SIGNED_IN = open('check.txt', 'r').read()
 
 del_char = ["'"]
 
@@ -81,6 +86,9 @@ class register(wx.Dialog):
         b_password = encryption.encrypt(raw_password)
         password = str(b_password)
         full_name = first + " " + last
+        if not EMAIL_REGEX.match(username):
+            wx.MessageBox("Email Does not exist", 'Error', wx.OK|wx.ICON_ERROR)
+        
         account_JSON = {
             "Account": [
                 {
@@ -102,11 +110,9 @@ class register(wx.Dialog):
             ]
     }   
         with open(JSON_FILE_PATH, 'a') as j:
-            try:
-                json.dump(account_JSON, j, indent=2, separators=(',',':'))
-                j.write(",\n") 
-            except TypeError:
-                pass
+            json.dump(account_JSON, j, indent=2, separators=(',',':'))
+            j.write(",\n") 
+            
             self.Destroy()
         
 class loginLog(wx.Dialog):
@@ -164,6 +170,7 @@ class loginLog(wx.Dialog):
         if(user_pwd == user_password) and (user_usr == user_username):
             pub.sendMessage("frameListener", message="show")
             self.Destroy()
+            SIGNED_IN = open('check.txt', 'w').write("True")
         else:
             wx.MessageBox("Username or Password incorrect", 'Warning', wx.OK|wx.ICON_WARNING)
             
@@ -183,13 +190,15 @@ class mainFrame(wx.Frame):
         super(mainFrame, self).__init__(parent, title=title, size=size)
         panel = mainPanel(self)
         pub.subscribe(self.listener, "frameListener")
-        
-        dlg = loginLog()
-        dlg.ShowModal()
-        
-        self.menuFrame()
-        self.InitUI()
-        self.Centre()
+        if SIGNED_IN == "False":
+            dlg = loginLog()
+            dlg.ShowModal()
+            dlg.Centre()
+        else:
+            self.Show()
+            self.menuFrame()
+            self.InitUI()
+            self.Centre()
         
     def listener(self, message, agr2=None):
         self.Show()    
@@ -204,11 +213,22 @@ class mainFrame(wx.Frame):
         #TODO Set bitmap for exit menu item
         filemenu.Append(quit)
         self.Bind(wx.EVT_MENU, self.onQuit, id=APP_EXIT)
+        sign_out = wx.MenuItem(filemenu, APP_EXIT, '&Sign out')
+        #TODO Set bitmap for sign out menu item
+        filemenu.Append(sign_out)
+        self.Bind(wx.EVT_MENU, self.signOut, id=APP_EXIT)
         menubar.Append(filemenu, '&File')
         self.SetMenuBar(menubar)
         
     def onQuit(self, e):
         self.Close()
+        
+    def signOut(self, s):
+        SIGNED_IN = open('check.txt', 'w').write("False")
+        self.Destroy()
+        llg = loginLog()
+        llg.ShowModal()
+        llg.Centre()
         
 def main():
     app = wx.App(False)
