@@ -1,2 +1,3 @@
-from . import mainapp
-from . import configuration
+#
+# Kept blank to mark module
+#

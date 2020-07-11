@@ -1,13 +1,15 @@
 # Imports
 import wx
-import json
 import os
+import sys
 import re
 import wx.html as html
 import appResources.resources.encryption.encryption as encryption
-from mainapp import INITIAL_SETUP_COMPLETED, loginLog
-import appResources.resources.setup.setuptools as setuptools
+from mainapp import INITIAL_SETUP_COMPLETED
+import appResources.resources.setup.apptools as apptools
 from time import sleep
+import jsonpickle
+from appResources.resources.setup.apptools import accountObject
 
 # Variable Definitions
 JSON_FILE_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\resource\\appResources\\docs\\json\\account.json'
@@ -16,6 +18,7 @@ EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]")
 
 HTML_FILE_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\resource\\appResources\\docs\\html\\configuration.html'
 
+JSON_LINE_COUNT = apptools.jsonLineCount()
 
 # Setup for application
 class setup(wx.Dialog):
@@ -25,7 +28,7 @@ class setup(wx.Dialog):
         config_pending = wx.StaticText(self, label="Installing data.db file...")
         h_box.Add(config_pending, 0, wx.ALL|wx.ALIGN_CENTER, 5)
         sleep(1.0)
-        setuptools.generate_database()
+        apptools.generate_database()
         sleep(1.0)
         config_pending.Hide()
         config_complete = wx.StaticText(self, label='data.db file Installed. Press continue to continue.')
@@ -46,7 +49,7 @@ class setup(wx.Dialog):
         
 class register(wx.Dialog):
     def __init__(self):
-        wx.Dialog.__init__(self, None, title="Register", size=(500,650))
+        wx.Dialog.__init__(self, None, title="Portal Password Manager Configuration | Register", size=(500,650))
         
         r_sizer = wx.BoxSizer(wx.HORIZONTAL)
         r_lbl = wx.StaticText(self, label="Register Account")
@@ -95,6 +98,9 @@ class register(wx.Dialog):
         self.SetSizer(mainSizer)
         
     def dataRegister(self, data):
+        accounts = {}
+        with open(JSON_FILE_PATH, 'r') as j:
+            accounts = jsonpickle.decode(j.read())
         first = self.f_ctrl.GetValue()
         last = self.l_ctrl.GetValue()
         username = self.username_ctrl.GetValue()
@@ -104,33 +110,21 @@ class register(wx.Dialog):
         full_name = first + " " + last
         if not EMAIL_REGEX.match(username):
             wx.MessageBox("Email Does not exist", 'Error', wx.OK|wx.ICON_ERROR)
-        
-        account_JSON = {
-            "Account": [
-                {
-                    "first":first,
-                    "last":last
-                },
-                {
-                    "Username":username,
-                    "Password":password
-                }
-            ],
-            "Profile": [
-                {
-                    "Name":full_name,
-                    "Age":0,
-                    "Gender":"None",
-                    "Company":"None"
-                }
-            ]
-    }   
+            return
+
         with open(JSON_FILE_PATH, 'a') as j:
-            json.dump(account_JSON, j, indent=2, separators=(',',':'))
+            tempAccount = accountObject(first, last, full_name, username, password)
+            accounts[username]=tempAccount
+            with open(JSON_FILE_PATH, 'w') as savefile:
+                savefile.write(jsonpickle.encode(accounts, indent=4))
             
-            self.Destroy()
-            llg = loginLog()
-            llg.ShowModal()
+            sleep(0.5)
+            if INITIAL_SETUP_COMPLETED == "True":
+                 wx.MessageBox("Registration Complete.", 'Info', wx.OK|wx.ICON_INFORMATION)
+            else:
+                wx.MessageBox("Registration Complete. Terminating configuration app.", 'Info', wx.OK|wx.ICON_INFORMATION)
+                self.Destroy()
+            
         
 class configFrame(wx.Frame):
     def __init__(self, *args, **kwargs):
@@ -173,3 +167,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    sys.exit()

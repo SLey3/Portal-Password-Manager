@@ -1,0 +1,18 @@
+{
+    "ghub4127@gmail.com": {
+        "py/object": "appResources.resources.setup.apptools.accountObject",
+        "first": "Sergio",
+        "last": "Ley",
+        "fullname": "Sergio Ley",
+        "username": "ghub4127@gmail.com",
+        "password": "b'gAAAAABfCfayzXAVuxLKL6HBgCUDER1OW3AyvSR5C-vD8KLVr6q5DkzvOGcYCnG8JAtxSOw8JGc4lXt6WlBbadgHfk_K_CBPPw=='"
+    },
+    "aoconner@yahoo.com": {
+        "py/object": "appResources.resources.setup.apptools.accountObject",
+        "first": "Alek",
+        "last": "O'Conner",
+        "fullname": "Alek O'Conner",
+        "username": "aoconner@yahoo.com",
+        "password": "b'gAAAAABfCff27oKpJOckTGdjxlA5xm2PCy1yb6T3hU9-5DITh9cYHEfmESD4GG28_gEza9hTm98K-2FCLztzoUto1FAVJn6eRg=='"
+    }
+}
