@@ -202,7 +202,7 @@ class mainFrame(wx.Frame):
             self.InitUI()
             self.Centre()
         
-    def listener(self, message, agr2=None):
+    def listener(self, message, arg2=None):
         self.Show()    
         
     def InitUI(self):
