@@ -1,6 +1,4 @@
-# Virtual Environment:
-Pipfile
-Pipfile.lock
+# Application ignore defaults
 key.key
 __pycache__/
 .idea/

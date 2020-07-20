@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+
+[packages]
+passwordmeter = "==0.1.8"
+cryptography = "==2.9.2"
+numpy = "==1.19.0"
+Pillow = "==7.1.2"
+wxPython = "==4.1.0"
+python-string-utils = "==1.0.0"
+PyPubSub = "==4.0.3"
+jsonpickle = "==1.4.1"
+importlib-metadata = "==1.7.0"
+zipp = "==3.1.0"
+beautifulsoup4 = "*"
+
+[requires]
+python_version = "3.8"

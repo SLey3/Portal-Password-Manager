@@ -9,6 +9,7 @@ import appResources.resources.setup.apptools as apptools
 import jsonpickle
 import os
 import sys
+from cryptography.fernet import InvalidToken
 import configuration
 
 ###Portal Password Manager Application
@@ -65,7 +66,7 @@ class loginLog(wx.Dialog):
         global user_username, raw_user_password
         #TODO  Create server for checking account values
         
-        user_usr = self.user.GetValue()
+        user_usr = self.user.GetValue() 
         user_pwd = self.pwd.GetValue()
         try:
            with open(JSON_FILE_PATH) as f:
@@ -73,20 +74,30 @@ class loginLog(wx.Dialog):
                 if user_username is None and raw_user_password is None:
                     user_username = account_JSON[user_usr].username
                     raw_user_password = account_JSON[user_usr].password
-        except UnboundLocalError:
+                raw_user_password = str(raw_user_password)
+                for i in del_char:
+                    raw_user_password = raw_user_password.replace(i, '')
+                raw_user_password = raw_user_password[1::]
+                raw_user_password = raw_user_password.encode()
+                user_password = encryption.de_encrypt(raw_user_password)
+                if len(self.pwd) == 0:
+                    wx.MessageBox("Password Field must not be blank!", 'Error', wx.OK|wx.ICON_ERROR)
+                    self.pwd.SetBackgroundColour("red")
+                    self.pwd.SetFocus()
+                    self.pwd.Refresh()
+                elif len(self.user) == 0:
+                    wx.MessageBox("Username Field must not be blank!", 'Error', wx.OK|wx.ICON_ERROR)
+                    self.user.SetBackgroundColour("red")
+                    self.user.SetFocus()
+                    self.user.Refresh()
+                elif(user_pwd == user_password) and (user_usr == user_username):
+                    self.Hide()
+                    pub.sendMessage("frameListener", message="show")
+                    SIGNED_IN = open('check.txt', 'w').write("True")
+                else:
+                    wx.MessageBox("Username or Password incorrect", 'Warning', wx.OK|wx.ICON_WARNING)  
+        except (KeyError, InvalidToken) as e:
             wx.MessageBox("No entry detected.", 'Error', wx.OK|wx.ICON_ERROR)
-        raw_user_password = str(raw_user_password)
-        for i in del_char:
-            raw_user_password = raw_user_password.replace(i, '')
-        raw_user_password = raw_user_password[1::]
-        raw_user_password = raw_user_password.encode()
-        user_password = encryption.de_encrypt(raw_user_password)
-        if(user_pwd == user_password) and (user_usr == user_username):
-            pub.sendMessage("frameListener", message="show")
-            self.Destroy()
-            SIGNED_IN = open('check.txt', 'w').write("True")
-        else:
-            wx.MessageBox("Username or Password incorrect", 'Warning', wx.OK|wx.ICON_WARNING)
 
 class mainPanel(wx.Panel):
     def __init__(self, parent):
@@ -197,7 +208,7 @@ class mainFrame(wx.Frame):
             dlg.ShowModal()
             dlg.Centre()
         else:
-            self.Show()
+            pub.sendMessage("frameListener", message="show")
             self.menuFrame()
             self.InitUI()
             self.Centre()
@@ -238,7 +249,7 @@ class mainFrame(wx.Frame):
         SIGNED_IN = open('check.txt', 'w').write("False")
         user_username = None
         raw_user_password = None
-        self.Destroy()
+        self.Hide()
         llg = loginLog()
         llg.ShowModal()
         llg.Centre()

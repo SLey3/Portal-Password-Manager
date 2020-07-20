@@ -123,7 +123,7 @@ class register(wx.Dialog):
                  wx.MessageBox("Registration Complete.", 'Info', wx.OK|wx.ICON_INFORMATION)
             else:
                 wx.MessageBox("Registration Complete. Terminating configuration app.", 'Info', wx.OK|wx.ICON_INFORMATION)
-                self.Destroy()
+                self.Close()
             
         
 class configFrame(wx.Frame):
@@ -154,7 +154,7 @@ class configFrame(wx.Frame):
         self.Centre()
         
     def configuration(self, event):
-        self.Destroy()
+        self.Close()
         s = setup()
         s.Show()
         INITIAL_SETUP_COMPLETED = open('Initial.txt', 'w').write("True")
