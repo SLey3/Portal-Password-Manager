@@ -79,12 +79,12 @@ class loginLog(wx.Dialog):
                 raw_user_password = raw_user_password[1::]
                 raw_user_password = raw_user_password.encode()
                 user_password = encryption.de_encrypt(raw_user_password)
-                if len(self.pwd) == 0:
+                if self.pwd.GetLineLength == 0:
                     wx.MessageBox("Password Field must not be blank!", 'Error', wx.OK|wx.ICON_ERROR)
                     self.pwd.SetBackgroundColour("red")
                     self.pwd.SetFocus()
                     self.pwd.Refresh()
-                elif len(self.user) == 0:
+                elif self.user.GetLineLength == 0:
                     wx.MessageBox("Username Field must not be blank!", 'Error', wx.OK|wx.ICON_ERROR)
                     self.user.SetBackgroundColour("red")
                     self.user.SetFocus()

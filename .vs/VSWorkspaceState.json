@@ -1,11 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\src",
-    "\\src\\appResources",
-    "\\src\\appResources\\resources",
-    "\\src\\appResources\\resources\\setup"
+    ""
   ],
-  "SelectedNode": "\\src\\appResources\\resources\\setup\\apptools.py",
+  "SelectedNode": "\\src",
   "PreviewInSolutionExplorer": false
 }
