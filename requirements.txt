@@ -1,12 +1,9 @@
 passwordmeter==0.1.8
 cryptography==2.9.2
-pillow==7.1.2
 wxPython==4.1.0
-numpy==1.19.0
 python-string-utils==1.0.0
 PyPubSub==4.0.3
 jsonpickle==1.4.1
-importlib_metadata==1.7.0
-zipp==3.1.0
 requests==2.24.0
 beautifulsoup4==4.9.1
+html5lib==1.1

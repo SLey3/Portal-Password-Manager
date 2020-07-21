@@ -18,6 +18,7 @@ jsonpickle = "==1.4.1"
 importlib-metadata = "==1.7.0"
 zipp = "==3.1.0"
 beautifulsoup4 = "*"
+html5lib = "*"
 
 [requires]
 python_version = "3.8"
