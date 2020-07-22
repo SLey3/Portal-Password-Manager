@@ -1,3 +1,4 @@
 {
-  "Interpreter": "Portal PWD ENV\\Scripts\\python.exe"
+  "Interpreter": "Workspace|Workspace|Portal PWD ENV",
+  "TestFramework": "Pytest"
 }

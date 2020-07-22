@@ -1,6 +1,8 @@
 # import
 import requests
 from bs4 import BeautifulSoup
+import js2py
+
 
 # Website Requests
 
