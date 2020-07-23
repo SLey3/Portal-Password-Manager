@@ -3,4 +3,5 @@ key.key
 __pycache__/
 .idea/
 Portal Env/
-.vscode/
+.vs/
+node_modules

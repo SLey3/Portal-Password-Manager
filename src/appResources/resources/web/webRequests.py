@@ -2,9 +2,11 @@
 import requests
 from bs4 import BeautifulSoup
 import js2py
+import os
 
 
 # Website Requests
+JS_FILEPATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\src\\appResources\\resources\\web\\lib\\js-package\\webScraper.js'
 
 class webRequest:
     """
@@ -27,9 +29,17 @@ class webRequest:
             self.fullname = fullname
         else:
             pass
+
+        try:
+          from . import scraper as Scrape
+        except ImportError:
+          js2py.translate_file(JS_FILEPATH, 'scraper.py')
+          from . import scraper as Scrape
+        
         self.parse
     
     @property
     def parse(self):
         with requests.Session() as r:
-            pass
+            website = r.get(self.url)
+webRequest('gmail.com', 'ghub4127@gmail.com', 'Empire')
