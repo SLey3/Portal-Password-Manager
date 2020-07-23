@@ -1,0 +1,22 @@
+{
+  "name": "portal-password-manager-webscraper",
+  "version": "1.0.0",
+  "description": "N/A",
+  "main": "webScraper.js",
+  "scripts": {
+    "test": "node webScraper.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SLey3/Portal-Password-Manager.git"
+  },
+  "author": "Sergio Ley Languren",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SLey3/Portal-Password-Manager/issues"
+  },
+  "homepage": "https://github.com/SLey3/Portal-Password-Manager#readme",
+  "dependencies": {
+    "typescript-parser": "^2.6.1"
+  }
+}
