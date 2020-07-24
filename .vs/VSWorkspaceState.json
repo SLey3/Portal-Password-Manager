@@ -1,4 +1,13 @@
 {
-  "ExpandedNodes": [],
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\appResources",
+    "\\src\\appResources\\resources",
+    "\\src\\appResources\\resources\\web",
+    "\\src\\appResources\\resources\\web\\lib",
+    "\\src\\appResources\\resources\\web\\lib\\js-package"
+  ],
+  "SelectedNode": "\\words.txt",
   "PreviewInSolutionExplorer": false
 }

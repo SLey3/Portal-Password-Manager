@@ -1,4 +1,5 @@
 {
   "Interpreter": "Workspace|Workspace|Portal PWD ENV",
-  "TestFramework": "Pytest"
+  "TestFramework": "Pytest",
+  "SuppressPackageInstallationPrompt": true
 }

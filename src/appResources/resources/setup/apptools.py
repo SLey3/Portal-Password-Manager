@@ -7,7 +7,6 @@ import sqlite3
 import shutil
 import jsonpickle
 
-
 # Setup Tool
 def generate_database():
     """
@@ -37,14 +36,6 @@ def generate_database():
     ORIGINAL_FILE_PATH = os.path.join(APP_PATH, 'data.db')
     shutil.move(ORIGINAL_FILE_PATH, DESTINATION_FILE_PATH, copy_function=shutil.copytree)
 
-
-def jsonLineCount():
-    line_count = 0
-    JSON_FILE_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\src\\appResources\\docs\\json\\account.json'
-    with open(JSON_FILE_PATH) as j:
-        for line in j:
-            line_count+=1
-    return line_count
 
 class accountObject:
     """
