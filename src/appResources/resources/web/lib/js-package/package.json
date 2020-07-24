@@ -1,0 +1,26 @@
+{
+  "name": "web-scraper-for-manager",
+  "version": "1.0.0",
+  "description": "N/A",
+  "main": "Scraper.js",
+  "scripts": {
+    "test": "node Scraper.js",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SLey3/Portal-Password-Manager.git"
+  },
+  "keywords": [
+    "None"
+  ],
+  "author": "Sergio Ley Languren",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SLey3/Portal-Password-Manager/issues"
+  },
+  "homepage": "https://github.com/SLey3/Portal-Password-Manager#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3"
+  }
+}
