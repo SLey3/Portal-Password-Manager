@@ -4,3 +4,4 @@ __pycache__/
 .idea/
 Portal Env/
 .vs/
+node_modules/

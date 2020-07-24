@@ -1,6 +1,5 @@
 # import
 import requests
-from bs4 import BeautifulSoup
 import js2py
 import os
 import shutil
@@ -27,7 +26,10 @@ class webRequest:
         self.url = 'http://' + url
         self.usr = usr
         self.pwd = pwd
-        self.headers = headers
+        if headers != {}:
+          self.headers = headers
+        else:
+          pass
         if first != None:
             self.first = first
         else:
@@ -40,28 +42,22 @@ class webRequest:
             self.fullname = fullname
         else:
             pass
-
-        try:
-          from . import scraper as Scrape
-        except ImportError:
-          js2py.translate_file(JS_FILEPATH, 'scraper.py')
-          SCRAPER_PATH = os.path.join(os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\', 'scraper.py')
-          FINAL_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\src\\appResources\\resources\\web'
-          shutil.move(SCRAPER_PATH, FINAL_PATH, cop_function=shutil.copytree)
-          from . import scraper as Scrape
         
         self.parse
     
     @property
     def parse(self):
-        with requests.Session() as r:
-            website = r.get(self.url, headers=self.headers)
+     with requests.Session() as r:
+       try:
+        import scraper as Scrape
+       except ImportError:
+        js2py.translate_file(JS_FILEPATH, 'scraper.py')
+        SCRAPER_PATH = os.path.join(os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\', 'scraper.py')
+        FINAL_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\src\\appResources\\resources\\web'
+        shutil.move(SCRAPER_PATH, FINAL_PATH, copy_function=shutil.copytree)
+        import scraper as Scrape
+       website = r.get(self.url, headers=self.headers)
+       print(website.text)
+       scraped = Scrape.PyJsHoisted_Scraper_(self.url, website.text)
 
-try:
-  from . import scraper as Scrape
-except ImportError:
-  js2py.translate_file(JS_FILEPATH, 'scraper.py')
-  SCRAPER_PATH = os.path.join(os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\', 'scraper.py')
-  FINAL_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\src\\appResources\\resources\\web'
-  shutil.move(SCRAPER_PATH, FINAL_PATH, copy_function=shutil.copytree)
-  
+webRequest('gmail.com', 'ghub4127@gmail.com', 'Empire')
