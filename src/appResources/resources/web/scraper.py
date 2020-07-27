@@ -8,28 +8,35 @@ var = Scope( JS_BUILTINS )
 set_global_object(var)
 
 # Code follows:
-var.registers(['cheerio_1', 'axios_1', 'Scraper'])
+var.registers(['Scraper', 'axios_1', 'cheerio'])
 @Js
-def PyJsHoisted_Scraper_(url, content, this, arguments, var=var):
-    var = Scope({'url':url, 'content':content, 'this':this, 'arguments':arguments}, var)
-    var.registers(['AxiosInstance', 'url', 'content', 'Url'])
+def PyJsHoisted_Scraper_(url, login_page, this, arguments, var=var):
+    var = Scope({'url':url, 'login_page':login_page, 'this':this, 'arguments':arguments}, var)
+    var.registers(['Url', 'url', 'login_page', 'AxiosInstance'])
     var.put('Url', var.get('url'))
     var.put('AxiosInstance', var.get('axios_1').get('default').callprop('create'))
     @Js
     def PyJs_anonymous_0_(responce, this, arguments, var=var):
         var = Scope({'responce':responce, 'this':this, 'arguments':arguments}, var)
-        var.registers(['$', 'html', 'responce'])
+        var.registers(['website_pwd_field', '$', 'responce', 'html', 'website_usr_field'])
         var.put('html', var.get('responce').get('data'))
-        var.put('$', var.get('cheerio_1').get('cheerio').callprop('load', var.get('html')))
+        var.put('$', var.get('cheerio').callprop('load', var.get('html')))
+        var.put('website_usr_field', var.get('$')(Js('input[type=email]')))
+        var.put('website_pwd_field', var.get('$')(Js('input[type=password]')))
+        var.get('console').callprop('log', var.get('website_usr_field'))
+        var.get('console').callprop('log', var.get('website_pwd_field'))
+        return (var.get('website_usr_field') and var.get('website_pwd_field'))
     PyJs_anonymous_0_._set_name('anonymous')
-    var.get('AxiosInstance').callprop('get', var.get('Url')).callprop('then', PyJs_anonymous_0_)
+    var.get('AxiosInstance').callprop('get', var.get('Url')).callprop('then', PyJs_anonymous_0_).callprop('catch', var.get('console').get('error'))
 PyJsHoisted_Scraper_.func_name = 'Scraper'
 var.put('Scraper', PyJsHoisted_Scraper_)
 Js('use strict')
 var.get('exports').put('__esModule', Js(True))
-var.put('cheerio_1', var.get('require')(Js('cheerio')))
+var.get('Object').callprop('defineProperty', var.get('exports'), Js('__esModule'), Js({'value':Js(True)}))
+var.put('cheerio', var.get('require')(Js('cheerio')))
 var.put('axios_1', var.get('require')(Js('axios')))
 pass
+var.get('Scraper')(Js('https://www.gmail.com/'), Js(False))
 pass
 
 

@@ -22,12 +22,16 @@ class webRequest:
     """
     Copies and pastes username and password by default with the option of the first/last initial or fullname into a login form of a website
     """
-    def __init__(self, url, usr, pwd, first=None, last=None, fullname=None, headers=headerDict()):
+    def __init__(self, url, usr, pwd, first=None, last=None, fullname=None, headers=headerDict(), login_page=False):
         self.url = 'http://' + url
         self.usr = usr
         self.pwd = pwd
         if headers != {}:
           self.headers = headers
+        else:
+          pass
+        if login_page == True:
+          self.login_page = True
         else:
           pass
         if first != None:
@@ -57,7 +61,11 @@ class webRequest:
         shutil.move(SCRAPER_PATH, FINAL_PATH, copy_function=shutil.copytree)
         import scraper as Scrape
        website = r.get(self.url, headers=self.headers)
-       print(website.text)
-       scraped = Scrape.PyJsHoisted_Scraper_(self.url, website.text)
+       Scraped = Scrape.PyJsHoisted_Scraper_(website.url, website.text, self.login_page)
+       data = {
+         "username":self.usr,
+         "password":self.pwd
+       }
+       
 
-webRequest('gmail.com', 'ghub4127@gmail.com', 'Empire')
+webRequest('gmail.com', 'ghub4127@gmail.com', 'Empire', login_page=True)
