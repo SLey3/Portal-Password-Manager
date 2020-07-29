@@ -12,13 +12,16 @@ var.registers(['Scraper', 'axios_1', 'cheerio'])
 @Js
 def PyJsHoisted_Scraper_(url, login_page, this, arguments, var=var):
     var = Scope({'url':url, 'login_page':login_page, 'this':this, 'arguments':arguments}, var)
-    var.registers(['Url', 'url', 'login_page', 'AxiosInstance'])
-    var.put('Url', var.get('url'))
+    var.registers(['url', 'login_page', 'link', 'AxiosInstance'])
+    if var.get('login_page'):
+        var.put('link', ((var.get('url')+Js('/'))+var.get('login_page')))
+    else:
+        var.put('link', var.get('url'))
     var.put('AxiosInstance', var.get('axios_1').get('default').callprop('create'))
     @Js
     def PyJs_anonymous_0_(responce, this, arguments, var=var):
         var = Scope({'responce':responce, 'this':this, 'arguments':arguments}, var)
-        var.registers(['website_pwd_field', '$', 'responce', 'html', 'website_usr_field'])
+        var.registers(['website_usr_field', 'responce', 'html', 'website_pwd_field', '$'])
         var.put('html', var.get('responce').get('data'))
         var.put('$', var.get('cheerio').callprop('load', var.get('html')))
         var.put('website_usr_field', var.get('$')(Js('input[type=email]')))
@@ -27,7 +30,7 @@ def PyJsHoisted_Scraper_(url, login_page, this, arguments, var=var):
         var.get('console').callprop('log', var.get('website_pwd_field'))
         return (var.get('website_usr_field') and var.get('website_pwd_field'))
     PyJs_anonymous_0_._set_name('anonymous')
-    var.get('AxiosInstance').callprop('get', var.get('Url')).callprop('then', PyJs_anonymous_0_).callprop('catch', var.get('console').get('error'))
+    var.get('AxiosInstance').callprop('get', var.get('link')).callprop('then', PyJs_anonymous_0_).callprop('catch', var.get('console').get('error'))
 PyJsHoisted_Scraper_.func_name = 'Scraper'
 var.put('Scraper', PyJsHoisted_Scraper_)
 Js('use strict')
@@ -36,7 +39,7 @@ var.get('Object').callprop('defineProperty', var.get('exports'), Js('__esModule'
 var.put('cheerio', var.get('require')(Js('cheerio')))
 var.put('axios_1', var.get('require')(Js('axios')))
 pass
-var.get('Scraper')(Js('https://www.gmail.com/'), Js(False))
+var.get('Scraper')(Js('https://www.stackoverflow.com'), Js('users/login?ssrc=head&returnurl=https%3a%2f%2fstackoverflow.com%2f/'))
 pass
 
 

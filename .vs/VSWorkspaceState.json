@@ -6,8 +6,9 @@
     "\\src\\appResources\\resources",
     "\\src\\appResources\\resources\\web",
     "\\src\\appResources\\resources\\web\\lib",
+    "\\src\\appResources\\resources\\web\\lib\\html-package",
     "\\src\\appResources\\resources\\web\\lib\\js-package"
   ],
-  "SelectedNode": "\\src\\appResources\\resources\\web\\lib\\js-package\\Scraper.ts",
+  "SelectedNode": "\\src\\appResources\\resources\\web\\webRequests.py",
   "PreviewInSolutionExplorer": false
 }

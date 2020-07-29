@@ -1,32 +1,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 import * as cheerio from 'cheerio';
-import axios from 'axios';
+import axios from 'axios'
 
-interface usrdata {
-  [index: number]: string
-}
 
-function Scraper(url: string, login_page?: boolean){
-  const Url = url;
+function Scraper(url: string, login_page?: string){
+  if (login_page) {
+    var link: string = url + '/' + login_page;
+  }
+  else {
+    var link: string = url;
+  }
   const AxiosInstance = axios.create();
-  AxiosInstance.get(Url)
+  AxiosInstance.get(link)
     .then(responce => {
-      const dataType: usrdata[] = [];
       const html = responce.data;
       const $ = cheerio.load(html);
       const website_usr_field: Cheerio = $('input[type=email]');
-      website_usr_field.each((i, elem) => {
-        const website_usr_field_type: string = $(elem).find('input[type]').text();
-        let datatype: usrdata = [website_usr_field_type];
-      })
-      const website_usr_html_type = dataType[0];
-      if (dataType[0] == 'text') {
-        const website_usr_field: Cheerio = $('input[type=text]');
-      }
+      //if ()
       /*
       TODO:
-      1) Fix potential bug that is limiting websites to be scraped even if they have the same types for both username and password.
-      2) Fix if statement with mentor
+      1) Create if statement for assigning login type variable for values.
       */
       const website_pwd_field: Cheerio = $('input[type=password]');
       console.log(website_usr_field);
@@ -34,5 +27,3 @@ function Scraper(url: string, login_page?: boolean){
       return website_usr_field && website_pwd_field;
     }).catch(console.error);
 }
-
-Scraper('https://www.codechef.com/', false);
