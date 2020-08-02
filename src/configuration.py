@@ -18,8 +18,6 @@ EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]")
 
 HTML_FILE_PATH = os.path.expanduser(os.getenv('USERPROFILE')) + '\\AppData\\Local\\Programs\\Portal Password Manager\\src\\appResources\\docs\\html\\configuration.html'
 
-JSON_LINE_COUNT = apptools.jsonLineCount()
-
 # Setup for application
 class setup(wx.Dialog):
     def __init__(self):
