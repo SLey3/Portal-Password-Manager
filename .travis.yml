@@ -1,9 +1,13 @@
 language: python
 python:
-- 3.8
+    - 3.8
 
 before_install:
-- pip install pipenv
+    - pip install pipenv
+
+services:
+    - docker
 
 install:
-- python libconfig.py
+    - docker build -t python-barcode .
+    - docker run python-barcode
