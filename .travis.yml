@@ -9,10 +9,7 @@ services:
 install:
     - docker build -t python-barcode .
     - pip install pytest
-    - pip install pipenv
 
 script:
     - echo foo
-    - pipenv shell
-    - pipenv install -r requirements.txt
     - pytest
