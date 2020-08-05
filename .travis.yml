@@ -1,5 +1,6 @@
 language: python
 cache: pip
+sudo: true
 python:
     - 3.8
 
@@ -8,8 +9,7 @@ services:
 
 install:
     - docker build -t python-barcode .
-    - pip install pytest
 
 script:
     - echo foo
-    - pytest
+    - docker run python-barcode
