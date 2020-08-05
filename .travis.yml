@@ -1,13 +1,18 @@
 language: python
+cache: pip
 python:
     - 3.8
-
-before_install:
-    - pip install pipenv
 
 services:
     - docker
 
 install:
     - docker build -t python-barcode .
-    - docker run python-barcode
+    - pip install pytest
+    - pip install pipenv
+
+script:
+    - echo foo
+    - pipenv shell
+    - pipenv install -r requirements.txt
+    - pytest
