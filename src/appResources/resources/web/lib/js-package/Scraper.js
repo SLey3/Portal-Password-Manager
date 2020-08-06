@@ -2,7 +2,7 @@
 exports.__esModule = true;
 var cheerio = require("cheerio");
 var axios_1 = require("axios");
-function Scraper(url, login_page, header_str) {
+function Scraper(url, header_str, login_page) {
     if (login_page) {
         var link = url + '/' + login_page;
     }
@@ -10,8 +10,11 @@ function Scraper(url, login_page, header_str) {
         var link = url;
     }
     var user_agent = header_str;
+    console.log(user_agent);
     var AxiosInstance = axios_1["default"].create();
-    AxiosInstance.get(link, { headers: { 'User-Agent': user_agent } })
+    AxiosInstance.get(link, {
+        headers: { 'User-Agent': user_agent }
+    })
         .then(function (responce) {
         var html = responce.data;
         var $ = cheerio.load(html);
@@ -27,5 +30,4 @@ function Scraper(url, login_page, header_str) {
         return website_usr_field && website_pwd_field;
     })["catch"](console.error);
 }
-Scraper('stackoverflow.com', 'users/login?ssrc=head&returnurl=https%3a%2f%2fstackoverflow.com%2f');
-//'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'
+Scraper('stackoverflow.com', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36', 'users/login?ssrc=head&returnurl=https%3a%2f%2fstackoverflow.com%2f');

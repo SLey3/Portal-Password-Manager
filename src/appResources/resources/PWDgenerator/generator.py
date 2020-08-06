@@ -11,7 +11,7 @@ words = open('words.txt', 'r').read().split('\n')
 special_chars = ['!', '?', '%', '$', '*', '(', ')', '&', '@', '#', '^', '+', '=', '-', '_', '"', ';', ':', '<', '>', '/', '\\']
 uppercase_letters = ['A','B','C','D','E','F','G','H','I','J','K','L''M','N', 'O', 'P','Q','R','S','T','U','V','W','X','Y','Z']
 
-def create_password(num_words, num_numbers, num_special, num_uppercase_words, char_limit, strengthen = False):
+def create_password(num_words, num_numbers, num_special, num_uppercase_words, char_limit = 0, strengthen = False):
     """
     Generates Pasword from words, Uppercase letters, special chars, and numbers with the options of:
     :param num_words: Number of Words in password.
