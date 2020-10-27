@@ -8,7 +8,7 @@ pylint = "*"
 
 [packages]
 passwordmeter = "==0.1.8"
-cryptography = "==2.9.2"
+cryptography = "==3.2"
 numpy = "==1.19.0"
 Pillow = "==7.1.2"
 wxPython = "==4.1.0"
